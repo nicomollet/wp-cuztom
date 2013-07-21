@@ -147,6 +147,15 @@ class Cuztom_Meta_Box extends Cuztom_Meta
 		}
 	}
 
+	/**
+	 * Restore revisions and its meta
+	 *
+	 * @param  	int 	$post_id
+	 * @param  	int 	$revision_id
+	 * 
+	 * @author 	Gijs Jorissen
+	 * @since 	2.7
+	 */
 	function restore_revision( $post_id, $revision_id ) 
 	{
 		$post     = get_post( $post_id );
@@ -163,6 +172,14 @@ class Cuztom_Meta_Box extends Cuztom_Meta
 		}
 	}
 
+	/**
+	 * Add fields to revision screen
+	 *
+	 * @param  	array 	$fields
+	 * 
+	 * @author 	Gijs Jorissen
+	 * @since 	2.7
+	 */
 	function revision_fields( $fields ) 
 	{
 		foreach( $this->fields as $field )
@@ -173,7 +190,15 @@ class Cuztom_Meta_Box extends Cuztom_Meta
 		return $fields;
 	}
 
-
+	/**
+	 * Add meta to field on revision screen
+	 *
+	 * @param  	string 	$value
+	 * @param  	string 	$field
+	 * 
+	 * @author 	Gijs Jorissen
+	 * @since 	2.7
+	 */
 	function revision_field( $value, $field ) 
 	{
 		global $revision;
@@ -181,7 +206,6 @@ class Cuztom_Meta_Box extends Cuztom_Meta
 		if( $revision )
 			return get_metadata( 'post', $revision->ID, $field, true );
 	}
-
 	
 	/**
 	 * Used to add a column head to the Post Type's List Table
