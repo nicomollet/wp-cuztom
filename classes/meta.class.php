@@ -17,6 +17,7 @@ class Cuztom_Meta
 	var $data;
 	var $fields;
 	var $description;
+	var $revisions;
 
 	/**
 	 * Construct for all meta types, creates title (and description)
@@ -285,6 +286,7 @@ class Cuztom_Meta
 							{
 								$field = new $class( $field, $this->id );
 								$field->meta_type = $this->get_meta_type();
+								$field->revisions = $this->revisions;
 
 								$this->fields[$field->id] = $field;
 								$tab->fields[$field->id] = $field;
@@ -310,8 +312,9 @@ class Cuztom_Meta
 						$field = new $class( $field, $this->id );
 						$field->repeatable = false;
 						$field->ajax = false;
-						$field->meta_type = $this->get_meta_type();
 						$field->in_bundle = true;
+						$field->meta_type = $this->get_meta_type();
+						$field->revisions = $this->revisions;
 
 						$this->fields[$field->id] = $field;
 						$bundle->fields[$field->id] = $field;
@@ -330,6 +333,7 @@ class Cuztom_Meta
 					{
 						$field = new $class( $field, $this->id );
 						$field->meta_type = $this->get_meta_type();
+						$field->revisions = $this->revisions;
 
 						$this->fields[$field->id] = $field;
 						$return[$field->id] = $field;

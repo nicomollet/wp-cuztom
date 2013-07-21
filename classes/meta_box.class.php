@@ -29,7 +29,7 @@ class Cuztom_Meta_Box extends Cuztom_Meta
 	 * @since 	0.2
 	 *
 	 */
-	function __construct( $id, $title, $post_type, $data = array(), $context = 'normal', $priority = 'default' )
+	function __construct( $id, $title, $post_type, $data = array(), $args = array() )
 	{
 		if( ! empty( $title ) )
 		{
@@ -37,8 +37,10 @@ class Cuztom_Meta_Box extends Cuztom_Meta
 
 			$this->id 			= $id;
 			$this->post_types 	= (array) $post_type;
-			$this->context		= $context;
-			$this->priority		= $priority;
+
+			$this->context		= isset( $args['context'] ) 		? $args['context'] 			: 'normal';
+			$this->priority		= isset( $args['priority'] ) 		? $args['priority'] 		: 'default';
+			$this->revisions	= isset( $args['revisions'] ) 		? $args['revisions'] 		: $this->revisions;
 
 			// Chack if the class, function or method exist, otherwise use cuztom callback
 			if( Cuztom::is_wp_callback( $data ) )
@@ -65,6 +67,15 @@ class Cuztom_Meta_Box extends Cuztom_Meta
 			
 			// Add the meta box
 			add_action( 'add_meta_boxes', array( &$this, 'add_meta_box' ) );
+
+			if( $this->revisions )
+			{
+				add_action( 'wp_restore_post_revision', array( &$this, 'restore_revision' ), 10, 2 );
+				add_filter( '_wp_post_revision_fields', array( &$this, 'revision_fields' ) );
+
+				foreach( $this->fields as $field )
+					add_filter( '_wp_post_revision_field_' . $field->id, array( &$this, 'revision_field' ), 10, 2 );
+			}
 		}	
 	}
 	
@@ -132,9 +143,45 @@ class Cuztom_Meta_Box extends Cuztom_Meta
 			$value = isset( $values[$id] ) ? $values[$id] : '';
 			$value = apply_filters( "cuztom_post_meta_save_$field->type", apply_filters( 'cuztom_post_meta_save', $value, $field, $post_id ), $field, $post_id );
 
-			$field->save( $post_id, $value, 'post' );
+			$field->save( $post_id, $value );
 		}
 	}
+
+	function restore_revision( $post_id, $revision_id ) 
+	{
+		$post     = get_post( $post_id );
+		$revision = get_post( $revision_id );
+
+		foreach( $this->fields as $field )
+		{
+			$value  = get_post_meta( $revision->ID, $field->id, true );
+
+			if ( false !== $value )
+				update_post_meta( $post_id, $field->id, $value );
+			else
+				delete_post_meta( $post_id, $field->id );
+		}
+	}
+
+	function revision_fields( $fields ) 
+	{
+		foreach( $this->fields as $field )
+		{
+			$fields[$field->id] = $field->label;
+		}
+
+		return $fields;
+	}
+
+
+	function revision_field( $value, $field ) 
+	{
+		global $revision;
+
+		if( $revision )
+			return get_metadata( 'post', $revision->ID, $field, true );
+	}
+
 	
 	/**
 	 * Used to add a column head to the Post Type's List Table

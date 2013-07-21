@@ -27,6 +27,7 @@ class Cuztom_Field
 	
 	var $parent					= '';
 	var $meta_type				= '';
+	var $revisions				= '';
 	var $in_bundle				= false;
 	
 	var $show_admin_column 		= false;
@@ -177,10 +178,17 @@ class Cuztom_Field
 	 */
 	function save( $object_id, $value )
 	{
-		if( $this->meta_type == 'user' )
+		if( $this->meta_type == 'post' )
+		{
+			$parent_id 	= wp_is_post_revision( $object_id );
+
+			if( $this->revisions && $parent_id )
+				add_metadata( 'post', $object_id, $this->id, $value );
+			else
+				update_post_meta( $object_id, $this->id, $value );
+		}
+		elseif( $this->meta_type == 'user' )
 			update_user_meta( $object_id, $this->id, $value );
-		elseif( $this->meta_type == 'post' )
-			update_post_meta( $object_id, $this->id, $value );
 		elseif( $this->meta_type == 'term' )
 			return $value;
 
