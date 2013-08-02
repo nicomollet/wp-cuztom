@@ -76,6 +76,10 @@ class Cuztom_Singleton
 		include( CUZTOM_DIR . 'classes/meta_box.class.php' );
 		include( CUZTOM_DIR . 'classes/user_meta.class.php' );
 		include( CUZTOM_DIR . 'classes/term_meta.class.php' );
+
+		include( CUZTOM_DIR . 'classes/page.class.php' );
+		include( CUZTOM_DIR . 'classes/pages/menu_page.class.php' );
+		include( CUZTOM_DIR . 'classes/pages/submenu_page.class.php' );
 		
 		include( CUZTOM_DIR . 'classes/field.class.php' );
 		include( CUZTOM_DIR . 'classes/fields/bundle.class.php' );
@@ -101,12 +105,9 @@ class Cuztom_Singleton
 		include( CUZTOM_DIR . 'classes/fields/post_checkboxes.class.php' );
 		include( CUZTOM_DIR . 'classes/fields/term_select.class.php' );
 		include( CUZTOM_DIR . 'classes/fields/term_checkboxes.class.php' );
+		include( CUZTOM_DIR . 'classes/fields/hidden.class.php' );
 		// include( CUZTOM_DIR . 'classes/fields/slider.class.php' );
 		// include( CUZTOM_DIR . 'classes/fields/url.class.php' );
-		include( CUZTOM_DIR . 'classes/fields/hidden.class.php' );
-
-		include( CUZTOM_DIR . 'functions/post_type.php' );
-		include( CUZTOM_DIR . 'functions/taxonomy.php' );
 	}
 
 	/**

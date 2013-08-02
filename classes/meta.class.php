@@ -63,7 +63,7 @@ class Cuztom_Meta
 		if( ! empty( $data ) )
 		{
 			echo '<input type="hidden" name="cuztom[__activate]" />';
-			echo '<div class="cuztom" data-object-id="' . ( $meta_type == 'post' ? get_the_ID() : $object->ID ) . '" data-meta-type="' . $meta_type . '">';
+			echo '<div class="cuztom" data-object-id="' . ( $meta_type != 'page' ? ( $meta_type == 'post' ? get_the_ID() : $object->ID ) : '' ) . '" data-meta-type="' . $meta_type . '">';
 
 				if( ! empty( $this->description ) ) echo '<p class="cuztom-box-description">' . $this->description . '</p>';
 			
@@ -78,7 +78,12 @@ class Cuztom_Meta
 						/* Loop through $data */
 						foreach( $data as $id_name => $field )
 						{
-							$value = $this->is_meta_type( 'user' ) ? get_user_meta( $object->ID, $id_name, true ) : get_post_meta( $object->ID, $id_name, true );
+							if( $this->is_meta_type( 'user' ) )
+								$value = get_user_meta( $object->ID, $id_name, true );
+							elseif( $this->is_meta_type( 'user' ) )
+							 	$value = get_post_meta( $object->ID, $id_name, true );
+							elseif( $this->is_meta_type( 'page' ) )
+								$value = 'page';
 
 							if( ! $field instanceof Cuztom_Field_Hidden )
 							{
@@ -179,6 +184,10 @@ class Cuztom_Meta
 				break;
 			case 'Cuztom_Term_Meta' : 
 				return 'term'; 
+				break;
+			case 'Cuztom_Menu_Page' :
+			case 'Cuztom_Submenu_Page' :
+				return 'page';
 				break;
 			default :
 				return false; 
