@@ -33,6 +33,43 @@ class Cuztom_Page extends Cuztom_Meta
 
 			// Build the meta box and fields
 			$this->data = $this->build( $data );
+
+			// Register settings
+			add_action( 'admin_init', array( &$this, 'register_settings' ) );
+			add_action( 'admin_init', array( &$this, 'add_settings_sections' ) );
+			add_action( 'admin_init', array( &$this, 'add_settings_fields' ) );
+		}
+	}
+
+	function register_settings()
+	{
+		if( is_array( $this->fields ) )
+		{
+			foreach( $this->fields as $id => $field )
+			{
+				register_setting( 'cuztom', $field->id );
+			}
+		}
+	}
+
+	function add_settings_sections()
+	{
+		add_settings_section( 'cuztom_section', 'Cuztom Section', array( &$this, 'section_callback' ), $this->menu_slug );
+	}
+
+		function section_callback()
+		{
+			echo 'Just a description here!';
+		}
+
+	function add_settings_fields()
+	{
+		if( is_array( $this->fields ) )
+		{
+			foreach( $this->fields as $id => $field )
+			{
+				add_settings_field( $field->id, $field->label, array( $field, 'output' ), $this->menu_slug, 'cuztom_section' );
+			}
 		}
 	}
 
@@ -43,8 +80,13 @@ class Cuztom_Page extends Cuztom_Meta
 			echo '<h2>' . $this->page_title . '</h2>';
 
 			echo '<form method="post" action="options.php">';
-		
-				parent::callback( 'page' );
+
+				settings_fields( 'cuztom' );
+				do_settings_sections( $this->menu_slug );
+
+				// parent::callback( 'page' );
+
+				submit_button();
 
 			echo '</form>';
 
