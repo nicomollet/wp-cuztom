@@ -47,7 +47,7 @@ class Cuztom_Page extends Cuztom_Meta
 		{
 			foreach( $this->fields as $id => $field )
 			{
-				register_setting( 'cuztom', $field->id );
+				register_setting( 'cuztom', 'cuztom[' . $field->id . ']' );
 			}
 		}
 	}

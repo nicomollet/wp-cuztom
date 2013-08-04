@@ -95,11 +95,16 @@ class Cuztom_Field
 	function output( $value )
 	{
 		if( $this->repeatable && $this->_supports_repeatable )
-			return $this->_repeatable_output( $value );
+			$method = $this->_repeatable_output( $value );
 		elseif( $this->ajax && $this->_supports_ajax )
-			return $this->_ajax_output( $value );
+			$method = $this->_ajax_output( $value );
 		else
-			return $this->_output( $value );
+			$method = $this->_output( $value );
+
+		if( $this->is_meta_type( 'page' ) )
+			echo $method;
+		else
+			return $method;
 	}
 
 	/**
@@ -302,6 +307,20 @@ class Cuztom_Field
 	function output_explanation()
 	{
 		return ( ! $this->repeatable && $this->explanation ? '<em class="cuztom-explanation">' . $this->explanation . '</em>' : '' );
+	}
+
+	/**
+	 * Check what kind of meta we're dealing with
+	 * 
+	 * @return  string
+	 *
+	 * @author 	Gijs Jorissen
+	 * @since 	3.0
+	 * 
+	 */
+	function is_meta_type( $meta_type )
+	{
+		return $this->meta_type == $meta_type;
 	}
 	
 	/**
