@@ -73,9 +73,9 @@ class Cuztom_Singleton
 		include( CUZTOM_DIR . 'classes/sidebar.class.php' );
 
 		include( CUZTOM_DIR . 'classes/meta.class.php' );
-		include( CUZTOM_DIR . 'classes/meta_box.class.php' );
-		include( CUZTOM_DIR . 'classes/user_meta.class.php' );
-		include( CUZTOM_DIR . 'classes/term_meta.class.php' );
+		include( CUZTOM_DIR . 'classes/meta/meta_box.class.php' );
+		include( CUZTOM_DIR . 'classes/meta/user_meta.class.php' );
+		include( CUZTOM_DIR . 'classes/meta/term_meta.class.php' );
 
 		include( CUZTOM_DIR . 'classes/page.class.php' );
 		include( CUZTOM_DIR . 'classes/pages/menu_page.class.php' );
