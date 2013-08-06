@@ -43,13 +43,7 @@ class Cuztom_Page extends Cuztom_Meta
 
 	function register_settings()
 	{
-		if( is_array( $this->fields ) )
-		{
-			foreach( $this->fields as $id => $field )
-			{
-				register_setting( 'cuztom', 'cuztom[' . $field->id . ']' );
-			}
-		}
+		register_setting( 'cuztom', 'cuztom' );
 	}
 
 	function add_settings_sections()
@@ -83,8 +77,6 @@ class Cuztom_Page extends Cuztom_Meta
 
 				settings_fields( 'cuztom' );
 				do_settings_sections( $this->menu_slug );
-
-				// parent::callback( 'page' );
 
 				submit_button();
 
